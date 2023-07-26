@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 from sqlalchemy import select, insert, delete, update
 
-from database.database import get_async_session
+from src.database.database import async_session_maker
 
 
 class DatabaseRepositoryInterface(ABC):
@@ -34,22 +34,28 @@ class SqlQueryRepository(DatabaseRepositoryInterface):
     model = None
 
     async def get_retrieve(self, id: Union[str, int]) -> Dict:
-        async with get_async_session() as session:
+        async with async_session_maker() as session:
             statement = select(self.model).where(self.model.id == id)
             result = await session.execute(statement)
             result_data = [i[0].to_read_model() for i in result.all()]
             return result_data
 
     async def get_list(self) -> Dict:
-        async with get_async_session() as session:
+        async with async_session_maker() as session:
             statement = select(self.model)
             result = await session.execute(statement)
             result_data = [i[0].to_read_model() for i in result.all()]
             return result_data
 
     async def create(self, data: Dict) -> int:
-        async with get_async_session() as session:
+        async with async_session_maker() as session:
             statement = insert(self.model).values(**data).returning(self.model.id)
             result = await session.execute(statement)
             await session.commit()
             return result.scalar_one()
+        
+    async def update():
+        pass
+        
+    async def delete():
+        pass
