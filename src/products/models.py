@@ -10,7 +10,7 @@ class ProductCategory(AbstractBase):
 
     tite: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(String(500), nullable=True)
-    
+
     def to_read_model(self):
         return ProductCategorySchema(
             id=self.id,
@@ -22,7 +22,6 @@ class ProductCategory(AbstractBase):
         )
 
 
-
 class Product(AbstractBase):
     __tablename__ = "products"
 
@@ -30,7 +29,6 @@ class Product(AbstractBase):
     description: Mapped[str] = mapped_column(String(500), nullable=False)
     price: Mapped[float] = mapped_column(Float, default=0.0)
     category: Mapped[int] = mapped_column(ForeignKey("product_category.id"))
-
 
     def to_read_model(self):
         return ProductShema(
