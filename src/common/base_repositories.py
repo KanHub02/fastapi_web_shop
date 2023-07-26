@@ -33,11 +33,11 @@ class SqlQueryRepository(DatabaseRepositoryInterface):
 
     model = None
 
-    async def get_retrieve(self, id: Union[str, int]) -> Dict:
+    async def get_retrieve(self, pk: Union[str, int]) -> Dict:
         async with async_session_maker() as session:
-            statement = select(self.model).where(self.model.id == id)
+            statement = select(self.model).where(self.model.id == pk)
             result = await session.execute(statement)
-            result_data = [i[0].to_read_model() for i in result.all()]
+            result_data = [row[0] for row in result.all()]
             return result_data
 
     async def get_list(self) -> Dict:

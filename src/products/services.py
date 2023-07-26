@@ -1,4 +1,6 @@
-from src.products.schemas import ProductCreateSchema, ProductCategoryCreateSchema
+from typing import Union
+
+from src.products.schemas import ProductCreateSchema, ProductCategoryCreateSchema, ProductDetailSchema
 from src.products.repositories import ProductSqlRepository, ProductCategoryRepository
 
 from src.common.base_services import BaseService
@@ -10,6 +12,15 @@ class ProductService(BaseService):
         data = product_schema.model_dump()
         commit = await self.repository.create(data)
         return commit
+    
+    async def get_retrieve(self, pk: Union[str, int]):
+        result = await self.repository.get_retrieve(pk=pk)
+        return result
+    
+    async def get_list(self):
+        result = await self.repository.get_list()
+        return result
+
 
 
 class ProductCategoryService(BaseService):

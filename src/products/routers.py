@@ -8,9 +8,8 @@ from src.products.services import (ProductService, product_depends_execute, Prod
 
 router = APIRouter(
     prefix="/api/v1/products",
-    tags=["Tasks"]   
+    tags=["Products"]   
 )
-
 
 @router.post("/category/create/")
 async def create_product_category(
@@ -28,3 +27,12 @@ async def create_product(
 ):
     data = await service.add_product(product)
     return {"data": data}
+
+
+@router.get("/product/{product_id}")
+async def retrieve_product(
+    product_id: int,
+    service: Annotated[ProductService, Depends(product_depends_execute)]
+):
+    data = await service.get_retrieve(product_id)
+    return data
