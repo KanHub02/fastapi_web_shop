@@ -29,6 +29,7 @@ class Product(AbstractBase):
     description: Mapped[str] = mapped_column(String(500), nullable=False)
     price: Mapped[float] = mapped_column(Float, default=0.0)
     category: Mapped[int] = mapped_column(ForeignKey("product_category.id"))
+
     def to_read_model(self):
         return ProductShema(
             id=self.id,

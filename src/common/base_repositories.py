@@ -9,7 +9,7 @@ from src.database.database import async_session_maker
 
 class DatabaseRepositoryInterface(ABC):
     @abstractmethod
-    async def get_retrieve():
+    async def get_retrieve(pk: Union[str, int]):
         raise NotImplementedError
 
     @abstractmethod
@@ -21,11 +21,11 @@ class DatabaseRepositoryInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def delete():
+    async def delete(pk: Union[str, int]):
         raise NotImplementedError
 
     @abstractmethod
-    async def update():
+    async def update(pk: Union[str, int], data: Dict):
         raise NotImplementedError
 
 
@@ -53,9 +53,24 @@ class SqlQueryRepository(DatabaseRepositoryInterface):
             result = await session.execute(statement)
             await session.commit()
             return result.scalar_one()
-        
-    async def update():
-        pass
-        
-    async def delete():
-        pass
+
+    async def update(self, data: Dict, pk: int):
+        async with async_session_maker() as session:
+            statement = (
+                update(self.model)
+                .where(self.model.id == pk)
+                .values(**data)
+                .returning(self.model.id)
+            )
+            result = await session.execute(statement)
+            await session.commit()
+            return result.scalar()
+
+    async def delete(self, pk: Union[str, int]) -> int:
+        async with async_session_maker() as session:
+            statement = (
+                delete(self.model).where(self.model.id == pk).returning(self.model.id)
+            )
+            result = await session.execute(statement)
+            await session.commit()
+            return result.scalar_one()

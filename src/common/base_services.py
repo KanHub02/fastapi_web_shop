@@ -1,4 +1,3 @@
-
 from src.common.base_repositories import DatabaseRepositoryInterface
 
 

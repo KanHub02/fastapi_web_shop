@@ -35,10 +35,15 @@ class ProductCreateSchema(BaseModel):
     category: int
 
 
+class ProductUpdateShema(BaseModel):
+    title: str
+    description: str
+    price: float
+    category: int
+
+
 class ProductDetailSchema(BaseModel):
     title: str
     description: str
     price: float
     category: int
-    
-    
