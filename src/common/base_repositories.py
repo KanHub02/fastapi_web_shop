@@ -44,7 +44,7 @@ class SqlQueryRepository(DatabaseRepositoryInterface):
         async with async_session_maker() as session:
             statement = select(self.model)
             result = await session.execute(statement)
-            result_data = [i[0].to_read_model() for i in result.all()]
+            result_data = [i[0] for i in result.all()]
             return result_data
 
     async def create(self, data: Dict) -> int:

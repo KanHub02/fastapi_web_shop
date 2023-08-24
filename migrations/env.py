@@ -6,6 +6,9 @@ from sqlalchemy import pool
 from alembic import context
 
 from src.products.models import Base as product_base
+from src.users.models import Base as users_base
+
+# from src.users.models import Base as users_base
 
 
 # this is the Alembic Config object, which provides

@@ -45,6 +45,14 @@ async def retrieve_product(
     return data
 
 
+@router.get("")
+async def product_list(
+    service: Annotated[ProductService, Depends(product_depends_execute)]
+):
+    data = await service.get_list()
+    return data
+
+
 @router.patch("/{product_id}/update/")
 async def update_product(
     product_id: int,
